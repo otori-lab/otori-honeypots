@@ -1,0 +1,16 @@
+version: '3'
+services:
+  cowrie:
+    container_name: cowrie-classic
+    image: cowrie/cowrie:latest
+    ports:
+      - "2222:2222"
+    volumes:
+      - ../cowrie/cowrie.cfg.default:/cowrie/cowrie-git/etc/cowrie.cfg
+      - ../cowrie/userdb.txt.default:/cowrie/cowrie-git/etc/userdb.txt
+      - ../cowrie/banner.txt:/cowrie/etc/issue
+      - ../cowrie/fs_template:/cowrie/cowrie-git/honeyfs
+      - cowrie-logs:/cowrie/var/log/cowrie
+
+volumes:
+  cowrie-logs:

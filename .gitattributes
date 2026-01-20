@@ -1,0 +1,9 @@
+# Force le format Linux (LF) pour tous les fichiers textes
+# C'est vital pour les fichiers lus par Docker/Cowrie
+* text=auto eol=lf
+
+# Explicite pour les scripts et configs sensibles
+*.sh text eol=lf
+*.txt text eol=lf
+*.cfg text eol=lf
+*.default text eol=lf
