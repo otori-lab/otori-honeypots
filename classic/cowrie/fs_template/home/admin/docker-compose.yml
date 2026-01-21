@@ -1,0 +1,10 @@
+﻿version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - '8080:80'
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'RootPassword123!'

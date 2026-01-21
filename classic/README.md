@@ -82,3 +82,32 @@ docker cp 'nom_du_container':/cowrie/cowrie-git/var/log/cowrie/cowrie.json ./cap
 ```
 
 qui va créer un fichier json avec toutes les actions réalisées
+
+ **
+ # 1. Obtenir l'ID
+$ID = docker ps -q --filter "name=cowrie"
+
+# 2. Synchroniser (Fusion intelligente)
+docker exec -i $ID /cowrie/cowrie-env/bin/python3 -c "
+import os, subprocess
+host_dir = '/cowrie/cowrie-git/honeyfs'
+pickle_path = '/cowrie/cowrie-git/src/cowrie/data/fs.pickle'
+cmds = []
+for root, dirs, files in os.walk(host_dir):
+    rel_path = os.path.relpath(root, host_dir)
+    if rel_path == '.': rel_path = ''
+    linux_path = '/' + rel_path.replace(os.sep, '/').rstrip('/')
+    if linux_path:
+        cmds.append(f'mkdir {linux_path}')
+        cmds.append(f'cd {linux_path}')
+    else:
+        cmds.append('cd /')
+    for f in files:
+        cmds.append(f'touch {f}')
+cmds.append('exit')
+subprocess.run(['/cowrie/cowrie-env/bin/python3', '-m', 'cowrie.scripts.fsctl', pickle_path], input='\n'.join(cmds), text=True)
+"
+
+# 3. Redémarrer
+docker restart $ID
+**
