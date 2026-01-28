@@ -1,0 +1,100 @@
+{
+  "ts": "2026-01-28T16:17:04.945027Z",
+  "sid": "8d011809-d732-4b06-89a9-b67e3831564b",
+  "user": "user",
+  "hostname": "honeypot",
+  "cwd": "/home/user",
+  "history": [
+    "ls",
+    "exit"
+  ],
+  "fs": {
+    "/": {
+      "type": "dir",
+      "children": [
+        "home",
+        "tmp",
+        "etc",
+        "var"
+      ]
+    },
+    "/home": {
+      "type": "dir",
+      "children": [
+        "user"
+      ]
+    },
+    "/home/user": {
+      "type": "dir",
+      "children": [
+        "notes.txt",
+        "scripts",
+        ".ssh"
+      ]
+    },
+    "/tmp": {
+      "type": "dir",
+      "children": []
+    },
+    "/etc": {
+      "type": "dir",
+      "children": [
+        "passwd",
+        "hostname",
+        "shadow"
+      ]
+    },
+    "/var": {
+      "type": "dir",
+      "children": [
+        "log"
+      ]
+    },
+    "/var/log": {
+      "type": "dir",
+      "children": [
+        "auth.log"
+      ]
+    },
+    "/etc/hostname": {
+      "type": "file",
+      "content": "honeypot\n"
+    },
+    "/etc/passwd": {
+      "type": "file",
+      "content": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nuser:x:1000:1000:user:/home/user:/bin/bash\n"
+    },
+    "/etc/shadow": {
+      "type": "file",
+      "content": "root:!:18930:0:99999:7:::\ndaemon:*:18930:0:99999:7:::\nwww-data:*:18930:0:99999:7:::\nuser:$6$abcdef123456$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:18930:0:99999:7:::\n"
+    },
+    "/var/log/auth.log": {
+      "type": "file",
+      "content": "Jan 22 10:12:01 honeypot sshd[1024]: Accepted password for user from 10.0.0.5 port 53422 ssh2\nJan 22 10:12:03 honeypot sshd[1024]: pam_unix(sshd:session): session opened for user user(uid=1000)\n"
+    },
+    "/home/user/notes.txt": {
+      "type": "file",
+      "content": "TODO:\n- rotate ssh keys\n- backup /etc\n- check nginx logs\n"
+    },
+    "/home/user/scripts": {
+      "type": "dir",
+      "children": [
+        "backup.sh"
+      ]
+    },
+    "/home/user/scripts/backup.sh": {
+      "type": "file",
+      "content": "#!/bin/bash\necho \"backup started\"\n"
+    },
+    "/home/user/.ssh": {
+      "type": "dir",
+      "children": [
+        "authorized_keys"
+      ]
+    },
+    "/home/user/.ssh/authorized_keys": {
+      "type": "file",
+      "content": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfakekey user@laptop\n"
+    }
+  }
+}
