@@ -1,0 +1,8 @@
+{
+  "hostname": "srv-prod-01",
+  "domain": "internal.corp",
+  "os_version": "Ubuntu 22.04.3 LTS",
+  "kernel": "5.15.0-103-generic",
+  "fake_services": ["nginx", "mysql", "docker"],
+  "fake_users": ["admin", "deploy", "backup"]
+}
