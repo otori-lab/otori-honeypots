@@ -22,6 +22,7 @@ from fs_engine import (
     norm_path,
 )
 from llm_adapter import ollama_shell_reply
+from log_shipper import start_shipper, get_sensor_id
 
 # =========================
 # LOGGING SETUP
@@ -417,6 +418,10 @@ def handle_client(client_sock, addr, host_key):
 def main():
     host_key = load_or_create_hostkey()
 
+    # Démarrer le log shipper (si MONITORING_URL est configuré)
+    start_shipper()
+    sensor_id = get_sensor_id()
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((LISTEN_HOST, LISTEN_PORT))
@@ -426,6 +431,10 @@ def main():
     logger.info(f"Login: {FAKE_USER} / {FAKE_PASS}")
     logger.info(f"Hostname: {FAKE_HOSTNAME}")
     logger.info(f"Ollama: {OLLAMA_URL} (model={OLLAMA_MODEL})")
+    if sensor_id:
+        logger.info(f"Monitoring: {os.environ.get('MONITORING_URL')} (sensor={sensor_id})")
+    else:
+        logger.info("Monitoring: disabled")
 
     while True:
         client, addr = sock.accept()

@@ -17,8 +17,12 @@ services:
       # EXTRA_CONTEXT: |
       #   This server belongs to ACME Corp.
       #   It runs a WordPress blog and MySQL database.
+      # Optional: connect to monitoring server
+      MONITORING_URL: ""
+      PROFILE_NAME: ""
     volumes:
       - ./logs:/app/logs
+      - honeypot_data:/app/data
     restart: unless-stopped
     depends_on:
       ollama:
@@ -42,3 +46,5 @@ services:
 volumes:
   ollama_data:
     name: otori-ollama-data
+  honeypot_data:
+    name: otori-honeypot-data

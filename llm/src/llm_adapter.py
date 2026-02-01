@@ -119,10 +119,10 @@ def ollama_shell_reply(st, cmd: str, session: requests.Session, session_id: str,
         return (f"bash: {cmd}: command not found\n", 127)
     except requests.exceptions.Timeout:
         log_event(session_id, addr, "llm_timeout", {"cmd": cmd})
-        return (f"bash: {cmd}: LLM unavailable (timeout)\n", 127)
+        return (f"bash: {cmd.split()[0]}: command not found\n", 127)
     except requests.exceptions.ConnectionError as e:
         log_event(session_id, addr, "llm_connection_error", {"cmd": cmd, "error": str(e)})
-        return (f"bash: {cmd}: LLM unavailable (connection)\n", 127)
+        return (f"bash: {cmd.split()[0]}: command not found\n", 127)
     except Exception as e:
         log_event(session_id, addr, "llm_error", {"cmd": cmd, "error": type(e).__name__, "details": str(e)})
-        return (f"bash: {cmd}: LLM error ({type(e).__name__})\n", 127)
+        return (f"bash: {cmd.split()[0]}: command not found\n", 127)
