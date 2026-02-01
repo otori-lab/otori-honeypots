@@ -1,0 +1,44 @@
+services:
+  honeypot:
+    image: ghcr.io/otori-lab/otori-honeypots/honeypot-llm:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otori-honeypot
+    ports:
+      - "2222:2222"
+    environment:
+      OLLAMA_URL: "http://ollama:11434/api/generate"
+      OLLAMA_MODEL: "mistral:latest"
+      FAKE_USER: "admin"
+      FAKE_PASS: "password"
+      FAKE_HOSTNAME: "srv-prod-01"
+      # Optional: inject extra context for the LLM
+      # EXTRA_CONTEXT: |
+      #   This server belongs to ACME Corp.
+      #   It runs a WordPress blog and MySQL database.
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_started
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    # Model is pulled automatically on first LLM call
+    # Or manually: docker exec ollama ollama pull mistral
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  ollama_data:
+    name: otori-ollama-data

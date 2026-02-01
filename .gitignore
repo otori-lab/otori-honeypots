@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs (keep structure, ignore content)
+*.jsonl
+*.jsonl.bak
+llm/logs/sessions/*.json
+!llm/logs/.gitkeep
+!llm/logs/sessions/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# SSH keys (generated at runtime)
+hostkey_rsa
+hostkey_rsa.pub
+
+# Environment
+.env
+.env.local
