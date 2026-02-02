@@ -1,16 +1,34 @@
 version: '3'
 services:
   cowrie:
-    container_name: cowrie-classic
     image: cowrie/cowrie:latest
+    container_name: ${CONTAINER_NAME:-cowrie-classic}
     ports:
-      - "2222:2222"
+      - "${SSH_PORT:-2222}:2222"
     volumes:
-      - ../cowrie/cowrie.cfg.default:/cowrie/cowrie-git/etc/cowrie.cfg
-      - ../cowrie/userdb.txt.default:/cowrie/cowrie-git/etc/userdb.txt
-      - ../cowrie/banner.txt:/cowrie/etc/issue
-      - ../cowrie/fs_template:/cowrie/cowrie-git/honeyfs
+      - ./cowrie.cfg.default:/cowrie/cowrie-git/etc/cowrie.cfg:ro
+      - ./userdb.txt.default:/cowrie/cowrie-git/etc/userdb.txt:ro
+      - ./banner.txt:/cowrie/etc/issue:ro
+      - ./fs_template:/cowrie/cowrie-git/honeyfs:ro
       - cowrie-logs:/cowrie/var/log/cowrie
+    restart: unless-stopped
+
+  shipper:
+    build: ./shipper
+    container_name: ${CONTAINER_NAME:-cowrie-classic}-shipper
+    environment:
+      MONITORING_URL: ${MONITORING_URL:-}
+      PROFILE_NAME: ${PROFILE_NAME:-}
+      FAKE_HOSTNAME: ${SERVER_NAME:-cowrie}
+      LOG_FILE: /logs/cowrie.json
+      DATA_DIR: /data
+    volumes:
+      - cowrie-logs:/logs:ro
+      - shipper-data:/data
+    depends_on:
+      - cowrie
+    restart: unless-stopped
 
 volumes:
   cowrie-logs:
+  shipper-data:

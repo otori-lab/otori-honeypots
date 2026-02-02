@@ -10,8 +10,8 @@ COPY requirements.txt /app/
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create logs directory
-RUN mkdir -p /app/logs
+# Create logs and data directories
+RUN mkdir -p /app/logs /app/data
 
 # Port SSH
 EXPOSE 2222
@@ -24,7 +24,11 @@ ENV FAKE_USER="admin"
 ENV FAKE_PASS="admin123"
 ENV FAKE_HOSTNAME="srv-prod-01"
 ENV LOG_DIR="/app/logs"
+ENV DATA_DIR="/app/data"
 ENV HOSTKEY_PATH="/app/hostkey_rsa"
+# Monitoring (optional - set to enable log shipping)
+ENV MONITORING_URL=""
+ENV PROFILE_NAME=""
 
 # Working directory for src
 WORKDIR /app/src
