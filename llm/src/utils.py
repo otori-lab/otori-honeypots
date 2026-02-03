@@ -1,8 +1,9 @@
 from pathlib import Path
 import json
+import os
 from datetime import datetime, timezone
 
-LOG_DIR = Path("logs")
+LOG_DIR = Path(os.environ.get("LOG_DIR", "logs"))
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
